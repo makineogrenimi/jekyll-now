@@ -18,7 +18,7 @@ categories:
 
 İlk olarak her zamanki gibi gerekli fonksiyon ve modülleri içeri aktarıyoruz:
 
-'''python
+```python
 from sklearn.datasets import load_iris
 from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 from sklearn.svm import SVC
@@ -26,42 +26,42 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, accuracy_score
 import pandas as pd
-'''
+```
 
 Verimizi içeri aktarıp, öznitelikler ve hedef olarak ayırıyoruz:
 
-'''python
+```python
 iris = load_iris()
 X = iris.data
 y = iris.target
-'''
+```
 
 Şimdi verimizi daha önceki örneklerden farklı olarak, %60 eğitim (train), %20 geçerleme (validation) ve %20 test verisi olarak ayırmamız gerekiyor. Bunun için bir yol _train_test_split _fonksiyonunu iki defa kullanmak:
 
-'''python
+```python
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25)
-'''
+```
 
 Şimdi üç farklı sınıflandırıcı oluşturup onları eğitiyoruz:
 
-'''python
+```python
 base_clf = [RandomForestClassifier(), ExtraTreesClassifier(), SVC()]
 
 for clf in base_clf:
     clf.fit(X_train, y_train)
-'''
+```
 
 Şimdi herbir sınıflandırıcının geçerleme kümesi üzerindeki tahminlerini bir tabloda birleştiriyoruz:
 
-'''python
+```python
 df = pd.DataFrame(data = { 'RandomForest': base_clf[0].predict(X_val),
                            'ExtraTrees': base_clf[1].predict(X_val),
                            'SVM': base_clf[2].predict(X_val),
                            'y_true': y_val
                          }
                  )
-'''
+```
 
 Tabloya göz atarsak:
 
@@ -69,14 +69,14 @@ Tabloya göz atarsak:
 
 Blender'ı oluşturup, yukarıdaki tablo üzerinde eğitiyoruz:
 
-'''python
+```python
 blender = LogisticRegression()
 blender.fit(df[['RandomForest', 'ExtraTrees', 'SVM']],df['y_true'])
-'''
+```
 
 Şimdi blender'ımızı test edelim. Bunun için 3 farklı sınıflandırıcının test seti üzerindeki tahminlerini blender'a vereceğiz ve sonucuna bakacağız:
 
-'''python
+```python
 df_test = pd.DataFrame(data = { 'RandomForest': base_clf[0].predict(X_test),
                                 'ExtraTrees': base_clf[1].predict(X_test),
                                 'SVM': base_clf[2].predict(X_test),
@@ -90,7 +90,7 @@ accuracy = accuracy_score(y_test, y_test_pred)
 conf_mat = confusion_matrix(y_test, y_test_pred)
 print(accuracy)
 print(conf_mat)
-'''
+```
 
 Sonuç olarak %90 başarı elde ettik (random_state'e göre değişiyor).
 
