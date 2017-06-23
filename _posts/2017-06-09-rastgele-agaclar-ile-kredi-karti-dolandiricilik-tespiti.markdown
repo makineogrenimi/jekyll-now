@@ -22,7 +22,9 @@ Verisetimiz, ayrıca, kredi kartı işleminin ne zaman gerçekleştiğini belirt
 
 İkili sınıflandırma (Binary Classification) problemleri için oluşturan modelleri değerlendirmede, _hata matrisi_ (confusion matrix) sıkça kullanılır.
 
-[caption id="attachment_913" align="aligncenter" width="332"]![confusion_matrix_1.png](https://makineogrenimi.files.wordpress.com/2017/06/confusion_matrix_1.png) Hata matrisi (Confusion Matrix)[/caption]
+<p align="center">
+  [confusion_matrix_1.png](https://makineogrenimi.files.wordpress.com/2017/06/confusion_matrix_1.png)
+</p>
 
 Bu matrisdeki değerleri açıklayalım:
 
