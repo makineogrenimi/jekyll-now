@@ -22,9 +22,8 @@ Verisetimiz, ayrıca, kredi kartı işleminin ne zaman gerçekleştiğini belirt
 
 İkili sınıflandırma (Binary Classification) problemleri için oluşturan modelleri değerlendirmede, _hata matrisi_ (confusion matrix) sıkça kullanılır.
 
-<p align="center">
-  [confusion_matrix_1.png](https://makineogrenimi.files.wordpress.com/2017/06/confusion_matrix_1.png)
-</p>
+[confusion_matrix_1.png](https://makineogrenimi.files.wordpress.com/2017/06/confusion_matrix_1.png)
+
 
 Bu matrisdeki değerleri açıklayalım:
 
@@ -56,7 +55,7 @@ Bizim örneğimizde hata matrisini yorumlamak için kullanacağımız değişken
 
 
 
-Verisetimiz dengeli olmadığı için, doğruluk değerimiz yanlı olacaktır. Dengeli olmayan verisetlerini değerlendirmede faydalı bir metrik, _Cohen's Kappa _katsayısıdır. Bunun hakkında daha fazla bilgi [buradan](http://www.pmean.com/definitions/kappa.htm) edinilebilir.
+Verisetimiz dengeli olmadığı için, doğruluk değerimiz yanlı olacaktır. Dengeli olmayan verisetlerini değerlendirmede faydalı bir metrik, Cohen's Kappa katsayısıdır. Bunun hakkında daha fazla bilgi [buradan](http://www.pmean.com/definitions/kappa.htm) edinilebilir.
 
 Şimdi kodumuzu yazmaya başlayalım. İlk olarak kullanacağımız modül, sınıf ve fonksiyonları içeri aktaralım:
 
