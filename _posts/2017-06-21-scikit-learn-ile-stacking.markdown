@@ -14,7 +14,7 @@ categories:
 - Scikitlearn
 ---
 
-[Önceki](https://makineogrenimi.wordpress.com/2017/06/19/modellerin-birlestirilmesi-ensemble-learning-4/) yazımızda _stacking _metodundan bahsetmiştik. Şimdi uygulamalı olarak görelim.
+[Önceki](https://makineogrenimi.wordpress.com/2017/06/19/modellerin-birlestirilmesi-ensemble-learning-4/) yazımızda stacking metodundan bahsetmiştik. Şimdi uygulamalı olarak görelim.
 
 İlk olarak her zamanki gibi gerekli fonksiyon ve modülleri içeri aktarıyoruz:
 
