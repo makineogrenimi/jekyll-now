@@ -24,7 +24,7 @@ Orange firmasının bir verisetini kullanacağız. Veriseti, kullanıcıların a
 
 Verisetimizi birçok sınıflandırıcı üzerinde eğitip doğruluklarına bakacağız. Hadi başlayalım.
 
-[code language="python"]
+```python
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -37,40 +37,40 @@ from sklearn.pipeline import Pipeline
 from sklearn.externals import joblib
 import seaborn as sns
 import pandas as pd
-[/code]
+```
 
 İlk olarak gerekli fonksiyon ve modülleri içeri aktardık.
 
-[code language="python"]
+```python
 training_data = pd.read_csv("churn-bigml-80.csv")
 test_data = pd.read_csv("churn-bigml-20.csv")
-[/code]
+```
 
 Eğitim ve test verilerimizi içeri aktardık.
 
-[code language="python"]
+```python
 del training_data['State']
 del training_data['Area code']
 
 del test_data['State']
 del test_data['Area code']
-[/code]
+```
 
 Verisetimizde bulunan 'State' ve 'Area code' öznitelikleri gerekli olmadığı için onları sildik.
 
-[code language="python"]
+```python
 X_train = training_data.ix[:, 0:17]
 y_train = training_data.ix[:, 17]
 X_test = test_data.ix[:, 0:17]
 y_test = test_data.ix[:, 17]
-[/code]
+```
 
-Hedef değerimizi (target), _y_train _ve _y_test_ değişkenlerine atadık.
+Hedef değerimizi (target), y_train ve y_test değişkenlerine atadık.
 
-[code language="python"]
+```python
 corr_matrix = X_train.corr()
 sns.heatmap(corr_matrix)
-[/code]
+```
 
 Değişkenler arasındaki korelasyona bakalım:
 
@@ -78,20 +78,20 @@ Değişkenler arasındaki korelasyona bakalım:
 
 Aralarında korelasyon katsayısı 1'e çok yakın olan (hatta 1 olan) değişkenler var ('Total day minutes' ile 'Total day charge'; 'Total eve minutes' ile 'Total eve charge'; 'Total night minutes' ile 'Total night charge'; 'Total intl minutes' ile 'Total intl charge' değişkenleri arasında birebir ilişki var). Öznitelikler arasında korelasyonun düşük olması (sıfıra yakın) makine öğrenmesi modelleri için önemlidir. Bu nedenle değişken çiftlerinin elemanlarından bir tanesini silebiliriz, yani:
 
-[code language="python"]
+```python
 columns = ['Total day minutes', 'Total eve minutes', 'Total night minutes', 'Total intl minutes']
 for column in columns:
     del X_train[column]
     del X_test[column]
-[/code]
+```
 
 Ve tekrar korelasyon grafiğine bakarsak:
 
 ![corr2](https://makineogrenimi.files.wordpress.com/2017/06/corr2.png)
 
-Verisetimizde iki tane kategorisel sütun var ('Voice mail plan' ve 'International plan'). Bunları kodlamamız (encoding) gerekiyor. Bunun için Scikit-Learn'in içindeki fonksiyonlar kullanılabilir, ancak, bizim değişkenlerimiz yalnız iki değer ('Yes' ve 'No') aldığından, _map _fonksiyonu ile de kolayca halledebiliriz:
+Verisetimizde iki tane kategorisel sütun var ('Voice mail plan' ve 'International plan'). Bunları kodlamamız (encoding) gerekiyor. Bunun için Scikit-Learn'in içindeki fonksiyonlar kullanılabilir, ancak, bizim değişkenlerimiz yalnız iki değer ('Yes' ve 'No') aldığından, map fonksiyonu ile de kolayca halledebiliriz:
 
-[code language="python"]
+```python
 d = {'Yes':1,
      'No':0}
 
@@ -99,19 +99,19 @@ X_train['International plan'] = X_train['International plan'].map(d)
 X_train['Voice mail plan'] = X_train['Voice mail plan'].map(d)
 X_test['International plan'] = X_test['International plan'].map(d)
 X_test['Voice mail plan'] = X_test['Voice mail plan'].map(d)
-[/code]
+```
 
 Sınıflandırıcılarımızı eğitmeden önce yapmamız gereken son bir şey var. Özniteliklerimizi ölçeklememiz gerekiyor. Bunun için:
 
-[code language="python"]
+```python
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
-[/code]
+```
 
 Artık sınıflandırıcılarımızı eğitelim ve doğruluk değerlerine bakalım:
 
-[code language="python"]
+```python
 # Create classifiers
 classifiers = {'linear_svm': SVC(kernel='linear'),
        'poly_svm': SVC(kernel='poly'),
@@ -126,11 +126,10 @@ classifiers = {'linear_svm': SVC(kernel='linear'),
 for clf in classifiers:
     classifiers[clf].fit(X_train, y_train)
     print(clf, accuracy_score(y_test, classifiers[clf].predict(X_test)))
-[/code]
+```
 
 Çıktı olarak:
-
-[code]
+```
 linear_svm 0.857571214393
 poly_svm 0.926536731634
 rbf_svm 0.920539730135
@@ -139,18 +138,18 @@ dcs_clf 0.910044977511
 rnd_clf 0.934032983508
 ext_clf 0.91604197901
 sgd_clf 0.814092953523
-[/code]
+```
 
 En iyi skoru rastgele ormanlar sınıflandırıcısı verdi. Şimdi rastgele ormanlar sınıflandırıcısı içeren bir pipeline oluşturalım ve modelimizi daha sonra kullanıcak bir şekilde kaydedelim:
 
-[code language="python"]
+```python
 pipeline = Pipeline([('scaler', StandardScaler()),
                     ('rnd_clf', RandomForestClassifier())]
                    )
 
 pipeline.fit(X_train, y_train)
 joblib.dump(pipeline, 'churn.pkl')
-[/code]
+```
 
 Bir sonraki yazıda görüşmek üzere.
 
