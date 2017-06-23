@@ -36,7 +36,7 @@ X = iris.data
 y = iris.target
 ```
 
-Şimdi verimizi daha önceki örneklerden farklı olarak, %60 eğitim (train), %20 geçerleme (validation) ve %20 test verisi olarak ayırmamız gerekiyor. Bunun için bir yol _train_test_split _fonksiyonunu iki defa kullanmak:
+Şimdi verimizi daha önceki örneklerden farklı olarak, %60 eğitim (train), %20 geçerleme (validation) ve %20 test verisi olarak ayırmamız gerekiyor. Bunun için bir yol train_test_split fonksiyonunu iki defa kullanmak:
 
 ```python
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
