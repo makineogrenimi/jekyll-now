@@ -22,7 +22,7 @@ Verisetimiz, ayrıca, kredi kartı işleminin ne zaman gerçekleştiğini belirt
 
 İkili sınıflandırma (Binary Classification) problemleri için oluşturan modelleri değerlendirmede, _hata matrisi_ (confusion matrix) sıkça kullanılır.
 
-![confusion_matrix_1.png](https://makineogrenimi.files.wordpress.com/2017/06/confusion_matrix_1.png)
+![confusion_matrix_1.png](https://makineogrenimi.files.wordpress.com/2017/06/confusion_matrix_1.png "Hata Matrisi")
 
 
 Bu matrisdeki değerleri açıklayalım:
@@ -59,57 +59,57 @@ Verisetimiz dengeli olmadığı için, doğruluk değerimiz yanlı olacaktır. D
 
 Şimdi kodumuzu yazmaya başlayalım. İlk olarak kullanacağımız modül, sınıf ve fonksiyonları içeri aktaralım:
 
-[code language="python"]
+```python
 import numpy as np
 from sklearn.cross_validation import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import confusion_matrix, cohen_kappa_score
 import pandas as pd
-[/code]
+```
 
 Verimizi içeri aktaralım:
 
-[code language="python"]
+```python
 df = pd.read_csv("creditcard.csv", sep=",")
 df.head()
-[/code]
+```
 
 ![1.png](https://makineogrenimi.files.wordpress.com/2017/06/1.png)
 
 Time özniteliği kullanmayacağımız için onu silelim:
 
-[code language="python"]
+```python
 del df["Time"]
 df.head()
-[/code]
+```
 ![2](https://makineogrenimi.files.wordpress.com/2017/06/2.png)
 
 Şimdi, ilk 29 sütunu X değişkenimize, son sütunu da y değişkenimize atayalım ve eğitim-test verileri(%70 eğitim-%30 test) olmak üzere ikiye ayıralım:
 
-[code language="python"]
+```python
 X = df.ix[:, 0:29]
 y = df.ix[:, 29]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
-[/code]
+```
 
 Sınıflandırıcımızı oluşturalım ve eğitim verilerimizi sınıflandırıcımıza besleyelim:
 
-[code language="python"]
+```python
 randomForestClassifier = RandomForestClassifier(n_estimators=200, n_jobs=-1)
 randomForestClassifier.fit(X_train, y_train)
-[/code]
+```
 
 n_estimators parametresi, rastgele ağaçlar algoritmasındaki ağaç sayısını belirlemektedir. n_jobs=-1 ise, algoritmayı çalıştırırken işlemcimizdeki tüm çekirdekleri kullanmamızı sağlamaktadır.
 
 Test verimizi tahmin edelim ve hata matrisimizi oluşturalım:
 
-[code language="python"]
+```python
 y_pred = randomForestClassifier.predict(X_test)
 
 cnf_matrix = confusion_matrix(y_pred, y_test)
 print(cnf_matrix)
-[/code]
+```
 
 Çıktımız aşağıdaki gibi olacaktır:
 
@@ -117,12 +117,12 @@ print(cnf_matrix)
 
 Şimdi accuracy, recall ve cappa değerlerini hesaplayalım:
 
-[code language="python"]
+```python
 accuracy = np.round(100*float((cnf_matrix[0][0]+cnf_matrix[1][1]))/float((cnf_matrix[0][0]+cnf_matrix[1][1] + cnf_matrix[1][0] + cnf_matrix[0][1])),2)
 recall = np.round(100*float((cnf_matrix[1][1]))/float((cnf_matrix[1][0]+cnf_matrix[1][1])),2)
 cappa = np.round(cohen_kappa_score(y_test, y_pred),3)
 print(accuracy, recall, cappa)
-[/code]
+```
 
 Ve sonuç:
 
